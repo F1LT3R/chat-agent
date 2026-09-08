@@ -9,13 +9,24 @@ const RETRY_BASE = 2000
 let ws = null
 let retry = 0
 
+// Only notify when nobody is actively looking at the app in a browser
+// window (focused browser = no popup).
+async function userIsLooking() {
+	try {
+		const list = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+		return list.some((c) => c.visibilityState === 'visible')
+	} catch {
+		return true // fail safe: don't spam
+	}
+}
+
 function connect() {
 	const proto = location.protocol === 'https:' ? 'wss' : 'ws'
 	ws = new WebSocket(`${proto}://${location.host}/ws`)
 	ws.onopen = () => {
 		retry = 0
 	}
-	ws.onmessage = (ev) => {
+	ws.onmessage = async (ev) => {
 		let m
 		try {
 			m = JSON.parse(ev.data)
@@ -23,6 +34,7 @@ function connect() {
 			return
 		}
 		if (m.type === 'turn-done' && m.text) {
+			if (await userIsLooking()) return
 			const body = String(m.text).replace(/\s+/g, ' ').trim()
 			self.registration.showNotification(m.title || 'chat-agent', {
 				body: body.length > 160 ? `${body.slice(0, 160)}…` : body,

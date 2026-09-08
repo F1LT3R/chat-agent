@@ -68,7 +68,11 @@ CA certificate). Until then the first visit shows a warning; tap through it.
 - Mobile-sized layout, pinch/drag-zoom left enabled by the browser
 - Usage stats line: `↑39M ↓286k 66.4%/524k` — tokens sent, tokens received,
   % of context used (last prompt vs 262144-token window), context window in k.
-  The `%/k` part is colored: red ≤ 20%, yellow ≤ 50%, white ≤ 75%, green ≤ 100%
+  The `%/k` part is colored healthy→burning: green ≤ 20%, white ≤ 50%,
+  yellow ≤ 75%, red above 75%
+- Thinking mode toggle (🧠 in the chat header): per-conversation, on by
+  default; sends `chat_template_kwargs: { enable_thinking }` to the vLLM
+  qwen3 chat template — off = direct answers without the reasoning trace
 - Browser history: every conversation switch and `＋` does `pushState`, so the
   back button walks `/` ↔ `/chat/<uuid>` history; deep links open directly
 - Export: `⤓` button or `GET /api/conversations/<id>/export` serves the real

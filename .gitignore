@@ -1,4 +1,5 @@
 .git/
+sessions/
 .pi/
 node_modules/
 prompts/

@@ -87,6 +87,15 @@ async function handleApi(req, res, url) {
     const r = store.renameConversation(id, body.title)
     return r ? sendJson(res, 200, { conversation: store.metaOf(r) }) : sendJson(res, 404, { error: 'not found' })
   }
+  if (parts[3] === 'thinking' && req.method === 'POST') {
+    const body = await readBody(req)
+    const r = store.setThinking(id, body.on)
+    if (r) {
+      broadcast({ type: 'conv-meta', conversation: store.metaOf(r) })
+      return sendJson(res, 200, { conversation: store.metaOf(r) })
+    }
+    return sendJson(res, 404, { error: 'not found' })
+  }
   if (parts[3] === 'export') {
     // Regenerate the markdown from the session, then serve the actual file.
     const file = path.join(config.sessionsDir, `${id}.md`)

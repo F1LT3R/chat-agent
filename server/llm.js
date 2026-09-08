@@ -8,7 +8,7 @@ import { config } from './config.js'
  *   { type: 'done', content, reasoning, toolCalls, usage }
  * Throws on HTTP errors or abort (AbortError).
  */
-export async function* streamChat({ messages, tools, signal }) {
+export async function* streamChat({ messages, tools, signal, thinking = true }) {
   const res = await fetch(`${config.model.baseUrl}/chat/completions`, {
     method: 'POST',
     headers: {
@@ -20,6 +20,9 @@ export async function* streamChat({ messages, tools, signal }) {
       messages,
       stream: true,
       stream_options: { include_usage: true },
+      // qwen3 chat template: true = emit reasoning_content (thinking),
+      // false = answer directly.
+      chat_template_kwargs: { enable_thinking: thinking },
       max_tokens: config.requestMaxTokens,
       ...(tools && tools.length ? { tools } : {}),
     }),
