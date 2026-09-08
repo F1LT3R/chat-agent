@@ -555,7 +555,10 @@ pre.hljs code {
 	transform: scale(0.95);
 }
 
-/* ---------------- mobile panel (collapsible overlay) ---------------- */
+/* ---------------- collapsible side panel ----------------
+   `panel-open` means the panel is visible, at any viewport width.
+   Wide viewports: in-flow — collapsing frees the space for the chat.
+   Narrow viewports: fixed overlay drawer with scrim. */
 #scrim {
 	position: fixed;
 	inset: 0;
@@ -579,6 +582,9 @@ pre.hljs code {
 	}
 }
 @media (min-width: 861px) {
+	#app:not(.panel-open) #panel {
+		display: none;
+	}
 	#scrim {
 		display: none !important;
 	}
