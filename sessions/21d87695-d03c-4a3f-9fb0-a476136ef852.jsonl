@@ -1,0 +1,3 @@
+{"type":"meta","id":"21d87695-d03c-4a3f-9fb0-a476136ef852","title":"Say the single word: ping","created":1788851288088,"model":"qwen-3.8b-256k","ctx":262144}
+{"type":"user","id":"u-fe65dde9c23d","ts":1788851288089,"text":"Say the single word: ping"}
+{"type":"assistant","id":"a-ba28978662ec","ts":1788851289409,"text":"\n\nping","usage":{"prompt":0,"completion":0}}

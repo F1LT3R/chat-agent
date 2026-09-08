@@ -1,0 +1,21 @@
+{
+  "name": "chat-agent",
+  "version": "1.0.0",
+  "description": "Mobile AI chat over the local network — Node.js + ws + highlight.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/index.js",
+    "caddy": "caddy run --config Caddyfile --adapter caddyfile",
+    "start:all": "node scripts/start-all.mjs",
+    "dev": "node server/index.js --http"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "highlight.js": "^11.12.0",
+    "ws": "^8.21.3"
+  }
+}

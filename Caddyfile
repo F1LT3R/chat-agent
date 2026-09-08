@@ -1,0 +1,24 @@
+# chat-agent — TLS front for the node app.
+#
+# Caddy automatically obtains and renews TLS certificates for all your sites
+# (https://caddyserver.com/docs/caddyfile/directives/tls). A LAN address has
+# no public domain, so the leaf cert is issued from Caddy's own internal CA
+# (still fully local — see scripts/cert.sh, which signs with the CA that
+# Caddy maintains in its storage). Re-run scripts/cert.sh when the machine's
+# LAN IP changes. Websockets (wss://…/ws) are proxied transparently — Caddy
+# passes the HTTP/1.1 101 upgrade straight through to the node process.
+#
+# Browser:  https://<host-ip>:4242/        (this server, 0.0.0.0)
+# Node API: http://127.0.0.1:4243          (loopback only, behind Caddy)
+#
+# Websockets (wss://…/ws) are proxied transparently — Caddy passes the HTTP/1.1
+# 101 upgrade straight through to the node process.
+
+{
+	admin off
+}
+
+:4242 {
+	tls certs/chat-agent.crt certs/chat-agent.key
+	reverse_proxy 127.0.0.1:4243
+}
