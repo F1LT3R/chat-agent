@@ -6,6 +6,7 @@ import { streamChat } from './llm.js'
 import { buildSystemPrompt } from './prompt.js'
 import { exportFilename, exportMarkdown } from './markdown.js'
 import { pagetestSchema, pagetestTool } from './tools/pagetest.js'
+import { sessionsSchema, sessionsTool } from './tools/sessions.js'
 
 const dir = config.sessionsDir
 fs.mkdirSync(dir, { recursive: true })
@@ -247,7 +248,7 @@ export async function runTurn(conv, userText, emit, externalSignal) {
       let reasoning = ''
       let terminal = null
       try {
-        for await (const e of streamChat({ messages: apiMessages, tools: [pagetestSchema], signal, thinking: conv.thinking === true })) {
+        for await (const e of streamChat({ messages: apiMessages, tools: [pagetestSchema, sessionsSchema], signal, thinking: conv.thinking === true })) {
           if (e.type === 'content') {
             content += e.delta
             emit({ type: 'token', conversationId: conv.id, messageId: msgId, kind: 'content', delta: e.delta })
@@ -321,7 +322,9 @@ export async function runTurn(conv, userText, emit, externalSignal) {
         emit({ type: 'tool', conversationId: conv.id, tool: tc.function.name, args: toolMsg.args, status: 'start' })
         const t0 = Date.now()
         try {
-          toolMsg.result = String(await pagetestTool(toolMsg.args))
+          toolMsg.result = String(
+            await (tc.function.name === 'sessions' ? sessionsTool(toolMsg.args) : pagetestTool(toolMsg.args)),
+          )
         } catch (e) {
           toolMsg.status = 'error'
           toolMsg.result = `error: ${e.message}`
