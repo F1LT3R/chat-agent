@@ -13,18 +13,31 @@ leaving the network. 🏠
 - 🔍 **Real web search** — the agent drives a live Chrome tab (Brave, Google,
   DuckDuckGo, Wikipedia, Google Images) and answers with cited sources
 - 🧠 **Thinking mode toggle** — per conversation: reason first, or answer directly
+  (off by default; the thinking trace streams into a collapsible box with a
+  200-char preview + expand arrow)
 - 📋 **Copy button on every turn** — and on every code block
 - 🎨 **Syntax highlighting** for code blocks (highlight.js, self-hosted)
 - 📊 **Usage stats line** — `↑12k ↓566 1.7%/262k`: tokens in, tokens out,
   context fill (green → white → yellow → red as it fills)
 - 🗂️ **Collapsible chat list** — rename ✎, ＋ New (each chat gets its own
   `/chat/<uuid>` URL, so the browser back button works)
+- 🔗 **Heading anchors & deep links** — GitHub-style ¶ anchors on response
+  headings; `/chat/<uuid>#heading` links open in-app and scroll the heading
+  into view (shareable, refresh-safe)
 - ⤓ **One-tap markdown export** in the format of `/volumes/DATA/conversations`
 - 🔔 **Mobile notifications without any cloud** — a service worker holds its
   own websocket and pops an OS notification when an answer lands while you're
   in another app
 - 📲 **Multi-device** — every tab, service worker and phone on the LAN can
   connect at once; events broadcast to all of them
+- 🔎 **Past-chat memory** — the agent's `sessions` tool searches and reads
+  your previous conversations stored on this machine, and links back into
+  them
+- 📜 **Reader-first streaming** — no auto-scroll while a reply streams;
+  it snaps to the bottom on completion, and only if you didn't touch the
+  screen
+- 🅰️ **Self-hosted web fonts** — Inter + JetBrains Mono served from
+  `public/fonts/` (zero CDN requests), with a larger, more readable UI
 
 ![mobile conversation list panel](docs/screenshots/mobile-panel.png)
 ![desktop side-by-side layout](docs/screenshots/desktop-wide.png)
@@ -80,11 +93,15 @@ phone/browser ──https──▶ edge (node) 0.0.0.0:4242
 
 - **Model** — `qwen-3.8b-256k` (262144-token context). Override with `CHAT_AGENT_PROVIDER` /
   `CHAT_AGENT_MODEL`.
-- **Thinking mode** — the 🧠 header button (per conversation, on by default)
-  sends `chat_template_kwargs: { enable_thinking }` to the vLLM qwen3 chat
-  template: on = reasoning trace shown in a collapsible "thinking" box,
-  off = direct answers, no reasoning.
-- **Web access** — the single agent tool [`pagetest`](https://github.com/F1LT3R/pagetest) (implemented in
+- **Thinking mode** — the 🧠 header button (per conversation, **off by
+  default**) sends `chat_template_kwargs: { enable_thinking }` to the vLLM
+  qwen3 chat template: on = the reasoning stream (`reasoning` / 
+  `reasoning_content` deltas) flows to the page as `kind: "reasoning"` 
+  tokens and shows in a "thinking" box — collapsed it previews the first 
+  200 chars, the ▸ arrow expands the full trace live; off = direct 
+  answers, no reasoning. Existing conversations keep whatever they stored
+  (legacy sessions without the field read as off).
+- **Web access** — the [`pagetest`](https://github.com/F1LT3R/pagetest) agent tool (implemented in
   `server/tools/pagetest.js`) drives a persistent page-test Chrome daemon:
   `search` (brave / google / google-images / duckduckgo / wikipedia),
   `fetch` (read a page's text), `screenshot`. `skills/SEARCH.md` is injected
@@ -92,18 +109,27 @@ phone/browser ──https──▶ edge (node) 0.0.0.0:4242
   so it answers stable facts from training and only browses for current or
   uncertain things. Brave sometimes bot-checks automated browsers; the tool
   clicks "Verify" via CDP automatically. 🕵️
+- **Past sessions** — the `sessions` agent tool (`server/tools/sessions.js`)
+  searches (substring over titles + every message) and reads (compact
+  transcript) the operator's previous conversations stored in
+  `sessions/`. `skills/SESSIONS.md` teaches the model when to use it and to
+  link back as `[title](/chat/<id>)` / `[title](/chat/<id>#heading-slug)` —
+  which the UI renders as clickable deep links (the slug rule is duplicated
+  from `lib/slug.js` so both stay in sync).
 
 ## 📁 Layout
 
 - `server/` — Node.js backend (ESM): HTTP API, WebSocket hub, protocol edge,
   agent loop, OpenAI-compatible streaming client, [`pagetest`](https://github.com/F1LT3R/pagetest) tool
 - `public/` — web assets: `index.html`, `style.css`, `sw.js` (notifications),
-  `icon.svg`
+  `icon.svg`, `fonts/` (self-hosted Inter + JetBrains Mono woff2)
 - `lib/` — the chat app (browser ES modules): `app.js`, `ui.js`, `ws.js`,
-  `md.js` (markdown + highlight.js), `stats.js`, `notify.js`
+  `md.js` (markdown + highlight.js), `slug.js` (heading slugs), `stats.js`,
+  `notify.js`
 - `sessions/` — one conversation = `<uuid>.jsonl` (session log) + `<uuid>.md`
   (markdown, regenerated after every turn); the UI renders from these
 - `skills/SEARCH.md` — the agent's web-search skill
+- `skills/SESSIONS.md` — the agent's past-sessions skill
 - `Caddyfile` — TLS termination on `:4443` (nameless-port site so every
   Host/SNI routes to the app)
 - `scripts/cert.sh` — issue/refresh the local leaf cert (→ `certs/`, git-ignored)
