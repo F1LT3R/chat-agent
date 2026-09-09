@@ -28,15 +28,18 @@
 					<button id="think-btn" class="on" title="Thinking mode: on" aria-label="Toggle thinking mode">🧠</button>
 					<button id="export-btn" title="Export conversation as markdown" aria-label="Export markdown">⤓</button>
 				</header>
-				<div id="messages" tabindex="0"></div>
-				<footer id="composer">
-					<div id="stats"></div>
-					<div id="input-row">
-						<textarea id="input" rows="1" placeholder="Message…" enterkeyhint="send"></textarea>
-						<button id="send" title="Send">➤</button>
-					</div>
-				</footer>
+				<div id="chat-inner">
+					<div id="messages" tabindex="0"></div>
+					<footer id="composer">
+						<div id="stats"></div>
+						<div id="input-row">
+							<textarea id="input" rows="1" placeholder="Message…" enterkeyhint="send"></textarea>
+							<button id="send" title="Send">➤</button>
+						</div>
+					</footer>
+				</div>
 				<div id="chat-controls">
+					<input id="width-slider" type="range" min="20" max="100" step="1" value="100" aria-label="Chat width" />
 					<button id="theme-toggle" aria-label="Toggle color theme" title="Toggle theme">🌙</button>
 				</div>
 			</main>

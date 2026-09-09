@@ -251,6 +251,18 @@ button {
 	flex-direction: column;
 	min-width: 0;
 	min-height: 0;
+	position: relative;
+}
+/* The resizable column: #messages + #composer live inside it. width is
+   set by JS (lib/theme.js applyWidth) as a percentage of #chat's content
+   width; margin: 0 auto centers the narrowed column. */
+#chat-inner {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	margin: 0 auto;
+	width: 100%;
 }
 #chat-head {
 	display: flex;
@@ -726,6 +738,12 @@ pre.hljs code {
 }
 /* bottom is set in JS (lib/theme.js positionControls) because the
    composer height varies with content + safe-area. */
+#width-slider {
+	width: 110px;
+	height: 20px;
+	accent-color: var(--blue2);
+	cursor: grab;
+}
 #theme-toggle {
 	background: none;
 	border: 0;
