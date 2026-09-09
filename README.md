@@ -56,7 +56,7 @@ phone/browser ──https──▶ edge (node) 0.0.0.0:4242
                             │  • TLS ClientHello → raw pipe to Caddy
                             │  • plain HTTP      → 301 to the same https URL
                             ▼
-                  Caddy 127.0.0.1:4443 (terminates TLS)
+                  Caddy 0.0.0.0:4443 (terminates TLS, any Host/SNI)
                             │  reverse proxy, websockets pass through
                             ▼
                   node API 127.0.0.1:4243
@@ -104,7 +104,8 @@ phone/browser ──https──▶ edge (node) 0.0.0.0:4242
 - `sessions/` — one conversation = `<uuid>.jsonl` (session log) + `<uuid>.md`
   (markdown, regenerated after every turn); the UI renders from these
 - `skills/SEARCH.md` — the agent's web-search skill
-- `Caddyfile` — TLS termination on `127.0.0.1:4443`
+- `Caddyfile` — TLS termination on `:4443` (nameless-port site so every
+  Host/SNI routes to the app)
 - `scripts/cert.sh` — issue/refresh the local leaf cert (→ `certs/`, git-ignored)
 - `scripts/start-all.mjs` — runs node + caddy together
 - `docs/screenshots/` — README screenshots (page-test captures)
