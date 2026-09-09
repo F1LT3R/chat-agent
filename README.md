@@ -1,11 +1,9 @@
 # 🤖 chat-agent — 📱 mobile AI chat on your local network
 
-A mobile-first AI chat that runs **entirely on your LAN**: a Node.js backend
-serves the web app over **HTTPS** (Caddy TLS), talks to a local
-OpenAI-compatible LLM — `qwen-3.8b-256k` from `~/.pi/agent/models.json`
-(provider `s2-qwen-3.8-256k` @ `http://spark-two:8000/v1`) — and lets the agent
-search the real web through the `page-test` browser daemon. No accounts, no
-cloud, no data leaving the network. 🏠
+A mobile-first AI chat that runs **entirely on your LAN**: a Node.js backend serves the web app over
+**HTTPS** (Caddy TLS), talks to a local OpenAI-compatible LLM — `qwen-3.8b-256k` — and lets the
+agent search the real web through the `page-test` browser daemon. No accounts, no cloud, no data
+leaving the network. 🏠
 
 ![mobile chat with code, search tool and usage stats](docs/screenshots/mobile-chat.png)
 
@@ -80,8 +78,7 @@ phone/browser ──https──▶ edge (node) 0.0.0.0:4242
 
 ## 🧠 The agent's brain
 
-- **Model** — `qwen-3.8b-256k` (262144-token context) resolved from
-  `~/.pi/agent/models.json`; override with `CHAT_AGENT_PROVIDER` /
+- **Model** — `qwen-3.8b-256k` (262144-token context). Override with `CHAT_AGENT_PROVIDER` /
   `CHAT_AGENT_MODEL`.
 - **Thinking mode** — the 🧠 header button (per conversation, on by default)
   sends `chat_template_kwargs: { enable_thinking }` to the vLLM qwen3 chat
@@ -147,7 +144,7 @@ HTTP (same origin, for state & export): `GET /api/conversations`,
 ## 🛠️ Troubleshooting
 
 | Symptom | Fix |
-|---|---|
+| --- | --- |
 | Phone shows a cert warning | Install the local CA (see TLS section) or tap through once |
 | "Page not available" after moving the machine | `sh scripts/cert.sh` + restart (new LAN IP) |
 | `http://` URL in the browser | It now 301-redirects to https automatically |
