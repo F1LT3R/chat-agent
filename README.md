@@ -24,7 +24,8 @@ leaving the network. 🏠
 - 🔗 **Heading anchors & deep links** — GitHub-style ¶ anchors on response
   headings; `/chat/<uuid>#heading` links open in-app and scroll the heading
   into view (shareable, refresh-safe)
-- ⤓ **One-tap markdown export** in the format of `/volumes/DATA/conversations`
+- 📝 **One-tap markdown export** (Markserv-logo button in the header), in the
+  format of `/volumes/DATA/conversations`
 - 🔔 **Mobile notifications without any cloud** — a service worker holds its
   own websocket and pops an OS notification when an answer lands while you're
   in another app
@@ -143,7 +144,8 @@ phone/browser ──https──▶ edge (node) 0.0.0.0:4242
 - Every chat is stored locally as `sessions/<uuid>.jsonl` (meta + user /
   assistant / tool messages, one JSON per line) plus a regenerated
   `sessions/<uuid>.md`.
-- **Export**: the ⤓ header button, or `GET /api/conversations/<id>/export`,
+- **Export**: the Markserv-logo header button, or
+  `GET /api/conversations/<id>/export`,
   serves the real markdown file (`<stamp>_<title>.md`) in the format of
   `/volumes/DATA/conversations` (`# Title` / `## user` / `## assistant` with
   `YYYY-MM-DD-HH-MM-SS` stamps).

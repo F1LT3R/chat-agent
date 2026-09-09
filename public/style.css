@@ -328,8 +328,7 @@ button {
 	padding: 4px 6px;
 	border-radius: 6px;
 }
-#panel-toggle,
-#export-btn {
+#panel-toggle {
 	background: none;
 	border: 0;
 	color: var(--text);
@@ -339,7 +338,23 @@ button {
 	cursor: pointer;
 	flex: 0 0 auto;
 }
-#panel-toggle:hover,
+#panel-toggle:hover {
+	background: var(--hover);
+}
+/* Markdown export button: the glyph is the Markserv logo icon. */
+#export-btn {
+	background: none;
+	border: 0;
+	padding: 4px 8px;
+	border-radius: 8px;
+	cursor: pointer;
+	flex: 0 0 auto;
+}
+#export-btn img {
+	display: block;
+	width: 18px;
+	height: 18px;
+}
 #export-btn:hover {
 	background: var(--hover);
 }
@@ -815,23 +830,8 @@ html[data-theme='dark'] pre.hljs .hljs-section {
 	transform: scale(0.95);
 }
 
-#chat-controls {
-	position: fixed;
-	right: 10px;
-	z-index: 40;
-	display: flex;
-	gap: 8px;
-	align-items: center;
-	padding: 6px 10px;
-	border-radius: 999px;
-	background: var(--bg2);
-	border: 1px solid var(--line);
-	box-shadow: 0 4px 16px var(--shadow, rgba(0, 0, 0, 0.4));
-}
-/* bottom is set in JS (lib/theme.js positionControls) because the
-   composer height varies with content + safe-area. */
 /* Custom track + thumb (not accent-color): both stay >= 3:1 against the
-   pill background in both themes, and the thumb is an 18px target. */
+   header background in both themes, and the thumb is an 18px target. */
 #width-slider {
 	width: 110px;
 	height: 20px;

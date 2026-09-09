@@ -1,3 +1,15 @@
 {"type":"meta","id":"21d87695-d03c-4a3f-9fb0-a476136ef852","title":"Say the single word: ping","created":1788851288088,"model":"qwen-3.8b-256k","ctx":262144}
 {"type":"user","id":"u-fe65dde9c23d","ts":1788851288089,"text":"Say the single word: ping"}
 {"type":"assistant","id":"a-ba28978662ec","ts":1788851289409,"text":"\n\nping","usage":{"prompt":0,"completion":0}}
+{"type":"user","id":"u-32d61b7ead08","ts":1788975562772,"text":"Theme tap test P03 Block A - reply with one word"}
+{"type":"assistant","id":"a-c6354487a856","ts":1788975564033,"text":"ok","usage":{"prompt":2269,"completion":2}}
+{"type":"user","id":"u-4456759e9f8a","ts":1788975681203,"text":"Theme tap test P03 Block A - reply with one word"}
+{"type":"assistant","id":"a-8ffc985fe3f9","ts":1788975682457,"text":"ok","usage":{"prompt":2297,"completion":2}}
+{"type":"user","id":"u-2e08626b6781","ts":1788978731078,"text":"Say the single word: pong"}
+{"type":"assistant","id":"a-c4af00192e1a","ts":1788978732332,"text":"pong","usage":{"prompt":2318,"completion":2}}
+{"type":"user","id":"u-6a7b506405c1","ts":1788981153750,"text":"Say the single word: pong at narrow width"}
+{"type":"assistant","id":"a-b5a49a5cdb6d","ts":1788981155018,"text":"pong","usage":{"prompt":2342,"completion":2}}
+{"type":"user","id":"u-981e65133a02","ts":1788981267492,"text":"Say the single word: pong at narrow width"}
+{"type":"assistant","id":"a-b7705508cdc7","ts":1788981268757,"text":"pong","usage":{"prompt":2366,"completion":2}}
+{"type":"user","id":"u-ed46264a26f0","ts":1788981313011,"text":"Say the single word: pong at narrow width"}
+{"type":"assistant","id":"a-6e2586012173","ts":1788981314281,"text":"pong","usage":{"prompt":2390,"completion":2}}

@@ -25,8 +25,10 @@
 				<header id="chat-head">
 					<button id="panel-toggle" title="Toggle chat list" aria-label="Toggle chat list" aria-expanded="false">☰</button>
 					<h1 id="chat-title" aria-live="polite">New Chat</h1>
+					<input id="width-slider" type="range" min="20" max="100" step="1" value="100" aria-label="Chat width" />
+					<button id="theme-toggle" aria-label="Dark mode" aria-pressed="true" title="Toggle theme">🌙</button>
 					<button id="think-btn" title="Thinking mode: off" aria-label="Toggle thinking mode" aria-pressed="false">🧠</button>
-					<button id="export-btn" title="Export conversation as markdown" aria-label="Export markdown">⤓</button>
+					<button id="export-btn" title="Export conversation as markdown" aria-label="Export markdown"><img src="/markserv.svg" alt="" /></button>
 				</header>
 				<div id="chat-inner">
 					<div id="messages" tabindex="0" role="log" aria-live="polite" aria-label="Chat messages"></div>
@@ -38,10 +40,6 @@
 						</div>
 						<span id="input-hint" class="visually-hidden">Press Enter to send. Press Shift and Enter for a new line.</span>
 					</footer>
-				</div>
-				<div id="chat-controls">
-					<input id="width-slider" type="range" min="20" max="100" step="1" value="100" aria-label="Chat width" />
-					<button id="theme-toggle" aria-label="Dark mode" aria-pressed="true" title="Toggle theme">🌙</button>
 				</div>
 			</main>
 		</div>
