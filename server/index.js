@@ -126,6 +126,10 @@ function handleStatic(req, res, url) {
     const f = path.join(NM, 'highlight.js', 'styles', 'github-dark.css')
     return fs.existsSync(f) ? sendFile(res, f) : sendJson(res, 404, { error: 'not found' })
   }
+  if (url.pathname === '/vendor/highlight-github.css') {
+    const f = path.join(NM, 'highlight.js', 'styles', 'github.css')
+    return fs.existsSync(f) ? sendFile(res, f) : sendJson(res, 404, { error: 'not found' })
+  }
   if (url.pathname === '/vendor/highlight-core.js') {
     // highlight.js ships a CJS core; shim the single module.exports line so
     // the browser can import it natively as ESM.

@@ -8,7 +8,7 @@
 		<title>chat-agent</title>
 		<link rel="icon" href="/icon.svg" type="image/svg+xml" />
 		<script src="/vendor/highlight-core.js" type="module"></script>
-		<link rel="stylesheet" href="/vendor/highlight-github-dark.css" />
+		<link id="hljs-theme" rel="stylesheet" href="/vendor/highlight-github-dark.css" />
 		<link rel="stylesheet" href="/style.css" />
 	</head>
 	<body>
@@ -36,6 +36,9 @@
 						<button id="send" title="Send">➤</button>
 					</div>
 				</footer>
+				<div id="chat-controls">
+					<button id="theme-toggle" aria-label="Toggle color theme" title="Toggle theme">🌙</button>
+				</div>
 			</main>
 		</div>
 		<script type="module" src="/lib/app.js"></script>

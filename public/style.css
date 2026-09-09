@@ -66,8 +66,61 @@
 	--white: #f5f7fa;
 	--green: #51cf66;
 	--code-bg: #0b0d12;
+	--hover: #181c26;
+	--active: #1a2340;
+	--bubble: #141824;
+	--chip: rgba(255, 255, 255, 0.07);
+	--link: #7aa2ff;
+	--code-inline: #232a3a;
+	--codebar: #101421;
+	--copy-hover: #1a2030;
+	--tool-bg: #10141d;
+	--blockquote-bg: #12161f;
+	--err-border: #4a2020;
+	--err-bg: #241012;
+	--user-copy: #cfe0ff;
+	--input-bg: #0b0e15;
+	--on-accent: #fff;
+	--scrim: rgba(0, 0, 0, 0.5);
+	--shadow: rgba(0, 0, 0, 0.4);
 	--font-ui: 'Inter';
 	--font-mono: 'JetBrains Mono';
+}
+
+/* Light theme: overrides the full palette. Every hardcoded surface/text
+   color in this file is one of these variables, so this block completes
+   the swap (--white intentionally goes near-black so the stats "white"
+   state stays readable on a light background). */
+html[data-theme='light'] {
+	--bg: #f6f8fa;
+	--bg2: #ffffff;
+	--line: #d0d7de;
+	--text: #1f2328;
+	--dim: #57606a;
+	--blue: #1f6feb;
+	--blue2: #0969da;
+	--red: #cf222e;
+	--yellow: #9a6700;
+	--white: #1f2328;
+	--green: #1a7f37;
+	--code-bg: #eaeef2;
+	--hover: #eaeef2;
+	--active: #dbe7f9;
+	--bubble: #ffffff;
+	--chip: rgba(31, 35, 40, 0.07);
+	--link: #0969da;
+	--code-inline: #eaeef2;
+	--codebar: #e2e8f0;
+	--copy-hover: rgba(31, 35, 40, 0.08);
+	--tool-bg: #f6f8fa;
+	--blockquote-bg: #f6f8fa;
+	--err-border: #ffcecb;
+	--err-bg: #fff5f5;
+	--user-copy: #fff;
+	--input-bg: #f6f8fa;
+	--on-accent: #fff;
+	--scrim: rgba(0, 0, 0, 0.25);
+	--shadow: rgba(31, 35, 40, 0.18);
 }
 
 * {
@@ -120,7 +173,7 @@ button {
 }
 #new-chat {
 	background: var(--blue);
-	color: #fff;
+	color: var(--on-accent);
 	border: 0;
 	border-radius: 8px;
 	font-size: 0.94rem;
@@ -144,10 +197,10 @@ button {
 	position: relative;
 }
 .conv:hover {
-	background: #181c26;
+	background: var(--hover);
 }
 .conv.active {
-	background: #1a2340;
+	background: var(--active);
 }
 .conv-title {
 	font-size: 0.91rem;
@@ -231,7 +284,7 @@ button {
 }
 #panel-toggle:hover,
 #export-btn:hover {
-	background: #181c26;
+	background: var(--hover);
 }
 #think-btn {
 	background: none;
@@ -250,7 +303,7 @@ button {
 	opacity: 1;
 }
 #think-btn:hover {
-	background: #181c26;
+	background: var(--hover);
 }
 
 #messages {
@@ -284,7 +337,7 @@ button {
 	white-space: pre-wrap;
 }
 .msg.assistant .bubble {
-	background: #141824;
+	background: var(--bubble);
 	border: 1px solid var(--line);
 	border-bottom-left-radius: 5px;
 	padding-right: 14px;
@@ -299,7 +352,7 @@ button {
 	position: absolute;
 	top: 6px;
 	right: 6px;
-	background: rgba(255, 255, 255, 0.07);
+	background: var(--chip);
 	border: 0;
 	border-radius: 7px;
 	color: var(--dim);
@@ -311,7 +364,7 @@ button {
 	transition: opacity 0.15s;
 }
 .msg.user .copymsg {
-	color: #cfe0ff;
+	color: var(--user-copy);
 }
 @media (hover: hover) {
 	.msg:hover .copymsg {
@@ -405,7 +458,7 @@ button {
 	margin: 3px 0;
 }
 .md a {
-	color: #7aa2ff;
+	color: var(--link);
 	text-decoration: underline;
 	word-break: break-all;
 }
@@ -413,7 +466,7 @@ button {
 	margin: 8px 0;
 	padding: 6px 12px;
 	border-left: 3px solid var(--blue2);
-	background: #12161f;
+	background: var(--blockquote-bg);
 	border-radius: 6px;
 	color: var(--dim);
 }
@@ -425,7 +478,7 @@ button {
 .md code {
 	font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 	font-size: 0.86em;
-	background: #232a3a;
+	background: var(--code-inline);
 	border-radius: 5px;
 	padding: 1.5px 5px;
 }
@@ -442,7 +495,7 @@ button {
 	justify-content: space-between;
 	align-items: center;
 	padding: 5px 10px;
-	background: #101421;
+	background: var(--codebar);
 	font-size: 0.72rem;
 	color: var(--dim);
 	font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -461,7 +514,7 @@ button {
 }
 .copycode:hover {
 	color: var(--text);
-	background: #1a2030;
+	background: var(--copy-hover);
 }
 pre.hljs {
 	margin: 0;
@@ -482,7 +535,7 @@ pre.hljs code {
 	margin: 8px 0;
 	border: 1px solid var(--line);
 	border-radius: 9px;
-	background: #10141d;
+	background: var(--tool-bg);
 	font-size: 0.81rem;
 }
 .tool summary {
@@ -560,9 +613,9 @@ pre.hljs code {
 	font-size: 0.81rem;
 	margin: 8px 0;
 	padding: 6px 10px;
-	border: 1px solid #4a2020;
+	border: 1px solid var(--err-border);
 	border-radius: 8px;
-	background: #241012;
+	background: var(--err-bg);
 }
 .msg.system {
 	justify-content: center;
@@ -570,7 +623,7 @@ pre.hljs code {
 .err-note.soft {
 	color: var(--dim);
 	border-color: var(--line);
-	background: #141824;
+	background: var(--bubble);
 }
 
 .empty {
@@ -585,7 +638,7 @@ pre.hljs code {
 .empty button {
 	margin-top: 14px;
 	background: var(--blue);
-	color: #fff;
+	color: var(--on-accent);
 	border: 0;
 	border-radius: 10px;
 	padding: 10px 20px;
@@ -630,7 +683,7 @@ pre.hljs code {
 	flex: 1;
 	resize: none;
 	max-height: 160px;
-	background: #0b0e15;
+	background: var(--input-bg);
 	color: var(--text);
 	border: 1px solid var(--line);
 	border-radius: 12px;
@@ -645,7 +698,7 @@ pre.hljs code {
 }
 #send {
 	background: var(--blue2);
-	color: #fff;
+	color: var(--on-accent);
 	border: 0;
 	border-radius: 12px;
 	width: 46px;
@@ -658,6 +711,33 @@ pre.hljs code {
 	transform: scale(0.95);
 }
 
+#chat-controls {
+	position: fixed;
+	right: 10px;
+	z-index: 40;
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	padding: 6px 10px;
+	border-radius: 999px;
+	background: var(--bg2);
+	border: 1px solid var(--line);
+	box-shadow: 0 4px 16px var(--shadow, rgba(0, 0, 0, 0.4));
+}
+/* bottom is set in JS (lib/theme.js positionControls) because the
+   composer height varies with content + safe-area. */
+#theme-toggle {
+	background: none;
+	border: 0;
+	font-size: 18px;
+	cursor: pointer;
+	padding: 4px 6px;
+	border-radius: 8px;
+}
+#theme-toggle:hover {
+	background: var(--line);
+}
+
 /* ---------------- collapsible side panel ----------------
    `panel-open` means the panel is visible, at any viewport width.
    Wide viewports: in-flow — collapsing frees the space for the chat.
@@ -665,7 +745,7 @@ pre.hljs code {
 #scrim {
 	position: fixed;
 	inset: 0;
-	background: rgba(0, 0, 0, 0.5);
+	background: var(--scrim);
 	z-index: 20;
 }
 @media (max-width: 860px) {
@@ -678,7 +758,7 @@ pre.hljs code {
 		transform: translateX(-104%);
 		transition: transform 0.22s ease;
 		z-index: 30;
-		box-shadow: 8px 0 24px rgba(0, 0, 0, 0.4);
+		box-shadow: 8px 0 24px var(--shadow);
 	}
 	#app.panel-open #panel {
 		transform: none;
