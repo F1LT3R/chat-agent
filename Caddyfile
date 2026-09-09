@@ -8,17 +8,17 @@
 # LAN IP changes. Websockets (wss://…/ws) are proxied transparently — Caddy
 # passes the HTTP/1.1 101 upgrade straight through to the node process.
 #
-# Browser:  https://<host-ip>:4242/        (this server, 0.0.0.0)
+# Browser:  https://<host-ip>:4242/        (node edge shim, 0.0.0.0 —
+#         sniffs TLS vs plain HTTP; plain HTTP gets a 301 to https)
+# Caddy:   127.0.0.1:4443                  (TLS termination, loopback only)
 # Node API: http://127.0.0.1:4243          (loopback only, behind Caddy)
 #
-# Websockets (wss://…/ws) are proxied transparently — Caddy passes the HTTP/1.1
-# 101 upgrade straight through to the node process.
 
 {
 	admin off
 }
 
-:4242 {
+127.0.0.1:4443 {
 	tls certs/chat-agent.crt certs/chat-agent.key
 	reverse_proxy 127.0.0.1:4243
 }

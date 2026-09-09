@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import http from 'node:http'
+import net from 'node:net'
 import path from 'node:path'
 import { WebSocketServer } from 'ws'
 import { config } from './config.js'
@@ -138,7 +139,13 @@ function handleStatic(req, res, url) {
     return fs.existsSync(f) ? sendFile(res, f) : sendJson(res, 404, { error: 'language not found' })
   }
   const f = safeJoin(PUB, url.pathname.slice(1))
-  return f ? (fs.existsSync(f) ? sendFile(res, f) : sendJson(res, 404, { error: 'not found' })) : sendJson(res, 400, { error: 'bad path' })
+  if (f && fs.existsSync(f)) return sendFile(res, f)
+  // SPA fallback: client-side routes like /chat/<uuid> serve the app shell
+  // so deep links and refreshes work.
+  if (req.method === 'GET' && !path.extname(url.pathname)) {
+    return sendFile(res, path.join(PUB, 'index.html'))
+  }
+  sendJson(res, 404, { error: 'not found' })
 }
 
 /* ---------------- websocket ---------------- */
@@ -219,11 +226,73 @@ wss.on('connection', (ws) => {
   ws.on('error', drop)
 })
 
+/* ---------------- edge (0.0.0.0:4242) ----------------
+ * Owns the public port in normal (caddy-tls) mode. Sniffs the first byte
+ * of each connection:
+ *  - TLS ClientHello (0x16) -> raw TCP pipe to Caddy, which terminates TLS
+ *    on 127.0.0.1:4443. WebSockets (wss) pass through untouched.
+ *  - Plain HTTP             -> 301 to the same https URL, so browsers
+ *    never see "Client sent an HTTP request to an HTTPS server."
+ */
+const CADDY_TLS = { host: '127.0.0.1', port: 4443 }
+
+function startEdge() {
+  const edge = net.createServer((client) => {
+    client.once('data', (d) => {
+      if (d.length === 0) return
+      if (d[0] === 0x16) {
+        const upstream = net.connect(CADDY_TLS.port, CADDY_TLS.host)
+        upstream.once('connect', () => {
+          upstream.write(d) // replay the bytes already consumed
+          client.pipe(upstream)
+          upstream.pipe(client)
+        })
+        upstream.on('error', () => client.destroy())
+        client.on('error', () => upstream.destroy())
+        return
+      }
+      // Plain HTTP: read the request head, then redirect to https.
+      let acc = d
+      const reply = () => {
+        try {
+          const end = Math.max(acc.indexOf('\r\n\r\n'), 0)
+          const headStr = acc.subarray(0, end).toString('latin1').toLowerCase()
+          const m = /host:\s*([^\r\n]+)/.exec(headStr)
+          let hostH = m ? m[1].trim() : 'localhost:4242'
+          if (!/:\d+$/.test(hostH)) hostH += ':4242'
+          const target = headStr.split('\n')[0]?.split(' ')[1] || '/'
+          client.write(
+            `HTTP/1.1 301 Moved Permanently\r\nLocation: https://${hostH}${target}\r\nContent-Length: 0\r\nConnection: close\r\n\r\n`,
+          )
+          client.end()
+        } catch (e) {
+          client.destroy()
+        }
+      }
+      if (acc.includes('\r\n\r\n')) reply()
+      else {
+        client.on('data', (ch) => {
+          acc = Buffer.concat([acc, ch])
+          if (acc.includes('\r\n\r\n')) reply()
+        })
+        setTimeout(() => client.destroy(), 5000).unref()
+      }
+    })
+    client.on('error', () => {})
+  })
+  edge.listen(4242, '0.0.0.0', () => {
+    console.log(`[chat-agent] edge on 0.0.0.0:4242 — TLS piped to Caddy 127.0.0.1:4443, plain HTTP -> 301 https`)
+  })
+  edge.on('error', (e) => console.error(`[chat-agent] edge failed to bind 4242: ${e.message}`))
+}
+
+if (!httpMode) startEdge()
+
 server.listen(port, host, () => {
   console.log(
     httpMode
       ? `[chat-agent] plain HTTP dev mode on http://${host}:${port} (no TLS — run Caddy for the real thing)`
-      : `[chat-agent] node API on http://${host}:${port} — Caddy serves TLS on 0.0.0.0:4242`,
+      : `[chat-agent] node API on http://${host}:${port} — TLS chain: edge 0.0.0.0:4242 -> Caddy 127.0.0.1:4443`,
   )
   console.log(`[chat-agent] model: ${config.model.id} @ ${config.model.baseUrl} (ctx ${config.model.contextWindow})`)
 })
