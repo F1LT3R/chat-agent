@@ -61,9 +61,12 @@ export async function* streamChat({ messages, tools, signal, thinking = true }) 
       if (json.usage) usage = json.usage
       const delta = json.choices?.[0]?.delta
       if (!delta) continue
-      if (delta.reasoning_content) {
-        reasoning += delta.reasoning_content
-        yield { type: 'reasoning', delta: delta.reasoning_content }
+      // The thinking stream arrives as reasoning_content on OpenAI-style
+      // endpoints and as reasoning on this host's vLLM build; accept both.
+      const rd = delta.reasoning_content ?? delta.reasoning
+      if (rd) {
+        reasoning += rd
+        yield { type: 'reasoning', delta: rd }
       }
       if (delta.content) {
         content += delta.content

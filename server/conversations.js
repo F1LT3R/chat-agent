@@ -40,7 +40,7 @@ function writeMeta(conv) {
     created: conv.created,
     model: conv.model,
     ctx: conv.ctx,
-    thinking: conv.thinking !== false,
+    thinking: conv.thinking === true,
   }
   const lines = fs.existsSync(sessionFile(conv.id))
     ? fs
@@ -74,7 +74,7 @@ export function loadConversation(id) {
     updated: 0,
     model: config.model.id,
     ctx: config.model.contextWindow,
-    thinking: true,
+    thinking: false,
     usage: { prompt: 0, completion: 0 },
     lastPromptTokens: 0,
     messages: [],
@@ -88,7 +88,9 @@ export function loadConversation(id) {
       continue
     }
     if (j.type === 'meta') {
-      Object.assign(conv, { title: j.title, created: j.created, model: j.model, ctx: j.ctx, thinking: j.thinking !== false })
+      // A stored true stays on; a stored/missing field means off (legacy
+      // sessions without the field behave as off).
+      Object.assign(conv, { title: j.title, created: j.created, model: j.model, ctx: j.ctx, thinking: j.thinking === true })
     } else {
       conv.messages.push(j)
       conv.updated = Math.max(conv.updated, j.ts || 0)
@@ -122,7 +124,7 @@ export function metaOf(conv) {
     updated: conv.updated,
     model: conv.model,
     ctx: conv.ctx,
-    thinking: conv.thinking !== false,
+    thinking: conv.thinking === true,
     usage: { ...conv.usage },
     lastPromptTokens: conv.lastPromptTokens,
     preview: lastUserText(conv),
@@ -149,7 +151,7 @@ export function createConversation(title) {
     updated: now,
     model: config.model.id,
     ctx: config.model.contextWindow,
-    thinking: true,
+    thinking: false,
     usage: { prompt: 0, completion: 0 },
     lastPromptTokens: 0,
     messages: [],
@@ -245,7 +247,7 @@ export async function runTurn(conv, userText, emit, externalSignal) {
       let reasoning = ''
       let terminal = null
       try {
-        for await (const e of streamChat({ messages: apiMessages, tools: [pagetestSchema], signal, thinking: conv.thinking !== false })) {
+        for await (const e of streamChat({ messages: apiMessages, tools: [pagetestSchema], signal, thinking: conv.thinking === true })) {
           if (e.type === 'content') {
             content += e.delta
             emit({ type: 'token', conversationId: conv.id, messageId: msgId, kind: 'content', delta: e.delta })
