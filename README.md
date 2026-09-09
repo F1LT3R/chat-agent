@@ -84,7 +84,7 @@ phone/browser ──https──▶ edge (node) 0.0.0.0:4242
   sends `chat_template_kwargs: { enable_thinking }` to the vLLM qwen3 chat
   template: on = reasoning trace shown in a collapsible "thinking" box,
   off = direct answers, no reasoning.
-- **Web access** — the single agent tool [`pagetest`](github.com/F1LT3R/pagetest) (implemented in
+- **Web access** — the single agent tool [`pagetest`](https://github.com/F1LT3R/pagetest) (implemented in
   `server/tools/pagetest.js`) drives a persistent page-test Chrome daemon:
   `search` (brave / google / google-images / duckduckgo / wikipedia),
   `fetch` (read a page's text), `screenshot`. `skills/SEARCH.md` is injected
@@ -96,7 +96,7 @@ phone/browser ──https──▶ edge (node) 0.0.0.0:4242
 ## 📁 Layout
 
 - `server/` — Node.js backend (ESM): HTTP API, WebSocket hub, protocol edge,
-  agent loop, OpenAI-compatible streaming client, [`pagetest`](github.com/F1LT3R/pagetest) tool
+  agent loop, OpenAI-compatible streaming client, [`pagetest`](https://github.com/F1LT3R/pagetest) tool
 - `public/` — web assets: `index.html`, `style.css`, `sw.js` (notifications),
   `icon.svg`
 - `lib/` — the chat app (browser ES modules): `app.js`, `ui.js`, `ws.js`,
