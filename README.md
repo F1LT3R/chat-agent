@@ -96,14 +96,7 @@ phone/browser ──https──▶ edge (node) 0.0.0.0:4242
 
 - **Model** — `qwen-3.8b-256k` (262144-token context). Override with `CHAT_AGENT_PROVIDER` /
   `CHAT_AGENT_MODEL`.
-- **Thinking mode** — the 🧠 header button (per conversation, **off by
-  default**) sends `chat_template_kwargs: { enable_thinking }` to the vLLM
-  qwen3 chat template: on = the reasoning stream (`reasoning` / 
-  `reasoning_content` deltas) flows to the page as `kind: "reasoning"` 
-  tokens and shows in a "thinking" box — collapsed it previews the first 
-  200 chars, the ▸ arrow expands the full trace live; off = direct 
-  answers, no reasoning. Existing conversations keep whatever they stored
-  (legacy sessions without the field read as off).
+- **Thinking mode** — the 🧠 header button (per conversation, **off by default**) sets the thinking level sent to the LLM: on = `reasoning_effort: "medium"`, off = `reasoning_effort: "none"` (the vLLM endpoint's top-level `reasoning_effort` fully determines thinking and overrides the legacy `chat_template_kwargs.enable_thinking`). On, the reasoning stream (`reasoning` / `reasoning_content` deltas) flows to the page as `kind: "reasoning"` tokens and shows in a "thinking" box — collapsed it previews the first 200 chars, the ▸ arrow expands the full trace live; off = direct answers, no reasoning. Existing conversations keep whatever they stored (legacy sessions without the field read as off).
 - **Web access** — the [`pagetest`](https://github.com/F1LT3R/pagetest) agent tool (implemented in
   `server/tools/pagetest.js`) drives a persistent page-test Chrome daemon:
   `search` (brave / google / google-images / duckduckgo / wikipedia),

@@ -20,9 +20,12 @@ export async function* streamChat({ messages, tools, signal, thinking = true }) 
       messages,
       stream: true,
       stream_options: { include_usage: true },
-      // qwen3 chat template: true = emit reasoning_content (thinking),
-      // false = answer directly.
-      chat_template_kwargs: { enable_thinking: thinking },
+      // The thinking level sent to the LLM. This vLLM build takes a
+      // top-level `reasoning_effort` (valid: none, minimal, low, medium,
+      // high, xhigh, max) and it fully determines thinking — it overrides
+      // the legacy chat_template_kwargs.enable_thinking. Contract:
+      // thinking on -> 'medium', thinking off -> 'none'.
+      reasoning_effort: thinking ? 'medium' : 'none',
       max_tokens: config.requestMaxTokens,
       ...(tools && tools.length ? { tools } : {}),
     }),
