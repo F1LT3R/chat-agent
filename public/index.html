@@ -13,34 +13,35 @@
 	</head>
 	<body>
 		<div id="app">
-			<aside id="panel" aria-label="Conversations">
+			<aside id="panel" tabindex="-1" aria-label="Conversations">
 				<div class="panel-head">
 					<span class="brand">chat-agent</span>
-					<button id="new-chat" title="New conversation">＋</button>
+					<button id="new-chat" title="New conversation" aria-label="New conversation">＋</button>
 				</div>
 				<ul id="conv-list"></ul>
 			</aside>
 			<div id="scrim" hidden></div>
 			<main id="chat">
 				<header id="chat-head">
-					<button id="panel-toggle" title="Toggle chat list" aria-label="Toggle chat list">☰</button>
-					<div id="chat-title">New Chat</div>
-					<button id="think-btn" class="on" title="Thinking mode: on" aria-label="Toggle thinking mode">🧠</button>
+					<button id="panel-toggle" title="Toggle chat list" aria-label="Toggle chat list" aria-expanded="false">☰</button>
+					<h1 id="chat-title" aria-live="polite">New Chat</h1>
+					<button id="think-btn" title="Thinking mode: off" aria-label="Toggle thinking mode" aria-pressed="false">🧠</button>
 					<button id="export-btn" title="Export conversation as markdown" aria-label="Export markdown">⤓</button>
 				</header>
 				<div id="chat-inner">
-					<div id="messages" tabindex="0"></div>
+					<div id="messages" tabindex="0" role="log" aria-live="polite" aria-label="Chat messages"></div>
 					<footer id="composer">
-						<div id="stats"></div>
+						<div id="stats" role="status"></div>
 						<div id="input-row">
-							<textarea id="input" rows="1" placeholder="Message…" enterkeyhint="send"></textarea>
-							<button id="send" title="Send">➤</button>
+							<textarea id="input" rows="1" placeholder="Message…" enterkeyhint="send" aria-label="Message" aria-describedby="input-hint"></textarea>
+							<button id="send" title="Send" aria-label="Send message">➤</button>
 						</div>
+						<span id="input-hint" class="visually-hidden">Press Enter to send. Press Shift and Enter for a new line.</span>
 					</footer>
 				</div>
 				<div id="chat-controls">
 					<input id="width-slider" type="range" min="20" max="100" step="1" value="100" aria-label="Chat width" />
-					<button id="theme-toggle" aria-label="Toggle color theme" title="Toggle theme">🌙</button>
+					<button id="theme-toggle" aria-label="Dark mode" aria-pressed="true" title="Toggle theme">🌙</button>
 				</div>
 			</main>
 		</div>

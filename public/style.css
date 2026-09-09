@@ -54,13 +54,14 @@
 }
 
 :root {
+	color-scheme: dark;
 	--bg: #0d0f14;
 	--bg2: #11141b;
 	--line: #232838;
 	--text: #dce3f2;
 	--dim: #8a93a8;
-	--blue: #1e3a8a;
-	--blue2: #2749b8;
+	--blue: #3658d6;
+	--blue2: #3b5bdb;
 	--red: #ff6b6b;
 	--yellow: #ffd166;
 	--white: #f5f7fa;
@@ -78,8 +79,9 @@
 	--blockquote-bg: #12161f;
 	--err-border: #4a2020;
 	--err-bg: #241012;
-	--user-copy: #cfe0ff;
+	--user-copy: #ffffff;
 	--input-bg: #0b0e15;
+	--input-line: #5a6478;
 	--on-accent: #fff;
 	--scrim: rgba(0, 0, 0, 0.5);
 	--shadow: rgba(0, 0, 0, 0.4);
@@ -92,6 +94,7 @@
    the swap (--white intentionally goes near-black so the stats "white"
    state stays readable on a light background). */
 html[data-theme='light'] {
+	color-scheme: light;
 	--bg: #f6f8fa;
 	--bg2: #ffffff;
 	--line: #d0d7de;
@@ -118,6 +121,7 @@ html[data-theme='light'] {
 	--err-bg: #fff5f5;
 	--user-copy: #fff;
 	--input-bg: #f6f8fa;
+	--input-line: #7d8590;
 	--on-accent: #fff;
 	--scrim: rgba(0, 0, 0, 0.25);
 	--shadow: rgba(31, 35, 40, 0.18);
@@ -125,6 +129,27 @@ html[data-theme='light'] {
 
 * {
 	box-sizing: border-box;
+}
+
+/* WCAG 2.4.7/2.4.11 — one visible, high-contrast focus indicator for all
+   keyboard focus (3:1 vs the surrounding surfaces in both themes). */
+:focus-visible {
+	outline: 2px solid var(--blue2);
+	outline-offset: 2px;
+}
+
+/* Screen-reader-only text (used for input hints and status words). */
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
 }
 html,
 body {
@@ -191,18 +216,37 @@ button {
 	flex: 1;
 }
 .conv {
+	border: 1px solid transparent;
+	border-radius: 10px;
+	position: relative;
+}
+/* The conversation item is a real <button> (keyboard + screen reader
+   accessible); the rename button is a sibling, never nested. */
+.conv-open {
+	display: block;
+	width: 100%;
+	text-align: left;
+	background: none;
+	border: 0;
+	color: var(--text);
+	font: inherit;
 	padding: 9px 10px;
 	border-radius: 10px;
 	cursor: pointer;
-	position: relative;
 }
-.conv:hover {
+.conv-open:hover {
 	background: var(--hover);
 }
 .conv.active {
+	/* 3:1 boundary vs the panel background (1.4.11) + a second, non-color
+	   cue for the active state. */
+	border-color: var(--blue2);
+}
+.conv.active .conv-open {
 	background: var(--active);
 }
 .conv-title {
+	display: block;
 	font-size: 0.91rem;
 	font-weight: 600;
 	white-space: nowrap;
@@ -211,6 +255,7 @@ button {
 	padding-right: 26px;
 }
 .conv-sub {
+	display: block;
 	font-size: 0.72rem;
 	color: var(--dim);
 	margin-top: 2px;
@@ -227,7 +272,7 @@ button {
 	color: var(--dim);
 	font-size: 0.81rem;
 	cursor: pointer;
-	padding: 4px;
+	padding: 6px;
 }
 .conv-rename:hover {
 	color: var(--text);
@@ -240,7 +285,6 @@ button {
 	border-radius: 6px;
 	font-size: 0.88rem;
 	padding: 4px 8px;
-	outline: none;
 	font-family: inherit;
 }
 
@@ -274,6 +318,7 @@ button {
 	min-height: 52px;
 }
 #chat-title {
+	margin: 0;
 	font-weight: 600;
 	font-size: 0.94rem;
 	flex: 1;
@@ -300,9 +345,9 @@ button {
 }
 #think-btn {
 	background: none;
-	border: 0;
+	border: 1px solid transparent;
 	font-size: 1.06rem;
-	padding: 6px 9px;
+	padding: 5px 8px;
 	border-radius: 8px;
 	cursor: pointer;
 	flex: 0 0 auto;
@@ -310,7 +355,10 @@ button {
 	opacity: 0.45;
 	transition: opacity 0.15s, filter 0.15s;
 }
+/* The on state gets a 3:1 boundary (1.4.11) in addition to the color,
+   and JS mirrors the state in aria-pressed. */
 #think-btn.on {
+	border-color: var(--blue2);
 	filter: none;
 	opacity: 1;
 }
@@ -323,7 +371,12 @@ button {
 	overflow-y: auto;
 	padding: 16px 12px 10px;
 	scroll-behavior: smooth;
-	outline: none;
+}
+/* The scroll container is keyboard-focusable (tabindex=0); give it an
+   inset ring so the indicator stays inside the scrollable area. */
+#messages:focus-visible {
+	outline: 2px solid var(--blue2);
+	outline-offset: -2px;
 }
 
 .msg {
@@ -345,6 +398,9 @@ button {
 }
 .msg.user .bubble {
 	background: var(--blue);
+	/* White text in both themes: dark-on-bright-blue would fail 4.5:1
+	   in the light theme (--text is near-black there). */
+	color: var(--on-accent);
 	border-bottom-right-radius: 5px;
 	white-space: pre-wrap;
 }
@@ -370,10 +426,15 @@ button {
 	color: var(--dim);
 	font-size: 0.75rem;
 	line-height: 1;
-	padding: 5px 7px;
+	padding: 6px 8px;
 	cursor: pointer;
 	opacity: 0;
 	transition: opacity 0.15s;
+}
+/* The button is invisible until hover on pointer devices but must be
+   visible the moment it has keyboard focus (2.4.7). */
+.copymsg:focus-visible {
+	opacity: 1;
 }
 .msg.user .copymsg {
 	color: var(--user-copy);
@@ -451,6 +512,15 @@ button {
 	.md h6 a.anchor {
 		opacity: 0.5;
 	}
+}
+/* A hidden anchor must appear the moment it has keyboard focus (2.4.7). */
+.md h1 a.anchor:focus,
+.md h2 a.anchor:focus,
+.md h3 a.anchor:focus,
+.md h4 a.anchor:focus,
+.md h5 a.anchor:focus,
+.md h6 a.anchor:focus {
+	opacity: 1;
 }
 .md h1 {
 	font-size: 1.35em;
@@ -541,6 +611,17 @@ pre.hljs code {
 	padding: 0;
 	font-size: inherit;
 }
+/* hljs token colors that fail 4.5:1 text contrast on the theme's own code
+   background (1.4.3): github.css built_in/symbol orange is 3.49 on white;
+   github-dark.css section blue is 4.08 on #0d1117. Scoped overrides keep
+   the rest of each theme intact. */
+html[data-theme='light'] pre.hljs .hljs-built_in,
+html[data-theme='light'] pre.hljs .hljs-symbol {
+	color: #b84e08; /* 5.08 vs #ffffff */
+}
+html[data-theme='dark'] pre.hljs .hljs-section {
+	color: #58a6ff; /* 7.49 vs #0d1117 */
+}
 
 /* ---------------- tool chips + thinking ---------------- */
 .tool {
@@ -586,6 +667,12 @@ pre.hljs code {
 	max-height: 240px;
 	overflow-y: auto;
 	font-family: var(--font-mono), ui-monospace, monospace;
+}
+/* Inset rings for the scrollable result/thinking boxes (2.4.7). */
+.tres:focus-visible,
+.think pre:focus-visible {
+	outline: 2px solid var(--blue2);
+	outline-offset: -2px;
 }
 
 .think {
@@ -697,16 +784,21 @@ pre.hljs code {
 	max-height: 160px;
 	background: var(--input-bg);
 	color: var(--text);
-	border: 1px solid var(--line);
+	border: 1px solid var(--input-line);
 	border-radius: 12px;
 	padding: 10px 12px;
 	font: inherit;
 	font-size: 0.97rem;
 	line-height: 1.45;
-	outline: none;
 }
+/* The border is the at-rest boundary (3:1 vs the composer background,
+   1.4.11); focus adds a stronger border + a visible outline. */
 #input:focus {
 	border-color: var(--blue2);
+}
+#input:focus-visible {
+	outline: 2px solid var(--blue2);
+	outline-offset: 2px;
 }
 #send {
 	background: var(--blue2);
@@ -738,11 +830,43 @@ pre.hljs code {
 }
 /* bottom is set in JS (lib/theme.js positionControls) because the
    composer height varies with content + safe-area. */
+/* Custom track + thumb (not accent-color): both stay >= 3:1 against the
+   pill background in both themes, and the thumb is an 18px target. */
 #width-slider {
 	width: 110px;
 	height: 20px;
-	accent-color: var(--blue2);
+	margin: 0;
+	appearance: none;
+	-webkit-appearance: none;
+	background: transparent;
 	cursor: grab;
+}
+#width-slider::-webkit-slider-runnable-track {
+	height: 4px;
+	border-radius: 2px;
+	background: var(--input-line);
+}
+#width-slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 18px;
+	height: 18px;
+	margin-top: -7px;
+	border: 0;
+	border-radius: 50%;
+	background: var(--blue2);
+}
+#width-slider::-moz-range-track {
+	height: 4px;
+	border-radius: 2px;
+	background: var(--input-line);
+}
+#width-slider::-moz-range-thumb {
+	width: 18px;
+	height: 18px;
+	border: 0;
+	border-radius: 50%;
+	background: var(--blue2);
 }
 #theme-toggle {
 	background: none;
@@ -788,5 +912,17 @@ pre.hljs code {
 	}
 	#scrim {
 		display: none !important;
+	}
+}
+
+/* Honor reduced-motion: no smooth scrolling, no transitions. */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
 	}
 }

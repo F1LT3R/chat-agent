@@ -28,6 +28,8 @@ leaving the network. 🏠
 - 🔔 **Mobile notifications without any cloud** — a service worker holds its
   own websocket and pops an OS notification when an answer lands while you're
   in another app
+- ♿ **WCAG 2.1 AA** — keyboard-operable everywhere, visible focus rings,
+  live regions for the streaming reply, and AA color contrast in both themes
 - 📲 **Multi-device** — every tab, service worker and phone on the LAN can
   connect at once; events broadcast to all of them
 - 🔎 **Past-chat memory** — the agent's `sessions` tool searches and reads
@@ -180,6 +182,15 @@ HTTP (same origin, for state & export): `GET /api/conversations`,
 
 ## 📝 Notes
 
+- Accessibility: the web UI targets WCAG 2.1 AA — every control is a real
+  focusable element (conversation rows included), a 2px focus ring is visible
+  on keyboard focus, `#messages` is a `role="log"` live region so screen
+  readers announce the streaming answer, `aria-pressed`/`aria-expanded`
+  mirror the thinking/theme/panel states, the mobile drawer manages focus
+  (Escape closes it, focus returns to the toggle), scrollable code/thinking
+  boxes are keyboard-focusable, and the palette is checked at 4.5:1 (text) /
+  3:1 (UI boundaries) in both themes — verified with axe-core (0 violations,
+  desktop + mobile, both themes).
 - vLLM's OpenAI-compatible default `max_tokens` is 16 when omitted, so the
   server always sends `max_tokens: 8192` explicitly.
 - Usage stats: "context %" uses the **last** request's prompt tokens vs the
