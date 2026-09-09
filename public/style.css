@@ -547,6 +547,9 @@ pre.hljs code {
 	white-space: pre-wrap;
 	font-size: 0.75rem;
 	font-family: ui-monospace, monospace;
+	/* the preview stays short; the expanded thinking can run long */
+	max-height: 240px;
+	overflow-y: auto;
 }
 
 .pending {
