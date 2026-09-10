@@ -41,7 +41,8 @@ leaving the network. 🏠
 - 📜 **Reader-first streaming** — no auto-scroll while a reply streams;
   it snaps to the bottom on completion, and only if you didn't touch the
   screen
-- 🅰️ **Self-hosted web fonts** — Inter (body, 9pt), Fira Code (code, 8.5pt), Newsreader (blockquotes, 11pt), Fraunces (headings, 32px) and JetBrains Mono (UI mono) served from `public/fonts/` (zero CDN requests)
+- 🅰️ **Self-hosted web fonts** — Inter + JetBrains Mono served from
+  `public/fonts/` (zero CDN requests), with a larger, more readable UI
 
 ![mobile conversation list panel](docs/screenshots/mobile-panel.png)
 ![desktop side-by-side layout](docs/screenshots/desktop-wide.png)
@@ -117,7 +118,7 @@ phone/browser ──https──▶ edge (node) 0.0.0.0:4242
 ## 📁 Layout
 
 - `server/` — Node.js backend (ESM): HTTP API, WebSocket hub, protocol edge, agent loop, OpenAI-compatible streaming client, [`pagetest`](https://github.com/F1LT3R/pagetest) + `sessions` tools
-- `public/` — web assets: `index.html`, `style.css`, `sw.js` (notifications), `icon.svg`, `markserv.svg` (export-button logo), `fonts/` (self-hosted Inter, Fira Code, Newsreader, Fraunces + JetBrains Mono woff2)
+- `public/` — web assets: `index.html`, `style.css`, `sw.js` (notifications), `icon.svg`, `markserv.svg` (export-button logo), `fonts/` (self-hosted Inter + JetBrains Mono woff2)
 - `lib/` — the chat app (browser ES modules): `app.js`, `ui.js`, `ws.js`, `md.js` (markdown + highlight.js), `slug.js` (heading slugs), `stats.js`, `notify.js`, `theme.js` (theme + width state)
 - `sessions/` — one conversation = `<uuid>.jsonl` (session log) + `<uuid>.md`
   (markdown, regenerated after every turn); the UI renders from these
