@@ -16,7 +16,7 @@ leaving the network. 🏠
   (off by default; the thinking trace streams into a collapsible box with a
   200-char preview + expand arrow)
 - 🌗 **Light/dark themes** — the 🌙/☀️ button in the top bar flips the whole UI (and the syntax-highlighting palette) between two AA-checked themes; the choice is remembered (default dark)
-- 🎚️ **Resizable chat column** — the top-bar width slider narrows or widens the chat from 20% to 100% of the window (always centered); the choice is remembered per device
+- 🎚️ **Resizable chat column** — the top-bar width slider narrows or widens the chat from 20% to 100% of the window; the column is centered on the screen (clamped to the menu's edge, or the screen edge when the menu is hidden), the slider hides below 1024px, and the choice is remembered per device
 - 📋 **Copy button on every turn** — and on every code block
 - 🎨 **Syntax highlighting** for code blocks (highlight.js, self-hosted)
 - 📊 **Usage stats line** — `↑12k ↓566 1.7%/262k`: tokens in, tokens out,
@@ -41,8 +41,7 @@ leaving the network. 🏠
 - 📜 **Reader-first streaming** — no auto-scroll while a reply streams;
   it snaps to the bottom on completion, and only if you didn't touch the
   screen
-- 🅰️ **Self-hosted web fonts** — Inter + JetBrains Mono served from
-  `public/fonts/` (zero CDN requests), with a larger, more readable UI
+- 🅰️ **Self-hosted web fonts** — Inter (body, 9pt), Fira Code (code, 8.5pt), Newsreader (blockquotes, 11pt), Fraunces (headings, 32px) and JetBrains Mono (UI mono) served from `public/fonts/` (zero CDN requests)
 
 ![mobile conversation list panel](docs/screenshots/mobile-panel.png)
 ![desktop side-by-side layout](docs/screenshots/desktop-wide.png)
@@ -118,7 +117,7 @@ phone/browser ──https──▶ edge (node) 0.0.0.0:4242
 ## 📁 Layout
 
 - `server/` — Node.js backend (ESM): HTTP API, WebSocket hub, protocol edge, agent loop, OpenAI-compatible streaming client, [`pagetest`](https://github.com/F1LT3R/pagetest) + `sessions` tools
-- `public/` — web assets: `index.html`, `style.css`, `sw.js` (notifications), `icon.svg`, `markserv.svg` (export-button logo), `fonts/` (self-hosted Inter + JetBrains Mono woff2)
+- `public/` — web assets: `index.html`, `style.css`, `sw.js` (notifications), `icon.svg`, `markserv.svg` (export-button logo), `fonts/` (self-hosted Inter, Fira Code, Newsreader, Fraunces + JetBrains Mono woff2)
 - `lib/` — the chat app (browser ES modules): `app.js`, `ui.js`, `ws.js`, `md.js` (markdown + highlight.js), `slug.js` (heading slugs), `stats.js`, `notify.js`, `theme.js` (theme + width state)
 - `sessions/` — one conversation = `<uuid>.jsonl` (session log) + `<uuid>.md`
   (markdown, regenerated after every turn); the UI renders from these

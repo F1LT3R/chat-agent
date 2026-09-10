@@ -52,6 +52,48 @@
 	font-display: swap;
 	src: url('/fonts/jbmono-700.woff2') format('woff2');
 }
+@font-face {
+	font-family: 'Fira Code';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/firacode-400.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Fira Code';
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url('/fonts/firacode-500.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Fira Code';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('/fonts/firacode-700.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Newsreader';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/newsreader-400.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Fraunces';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/fraunces-400.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Fraunces';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url('/fonts/fraunces-600.woff2') format('woff2');
+}
 
 :root {
 	color-scheme: dark;
@@ -87,6 +129,9 @@
 	--shadow: rgba(0, 0, 0, 0.4);
 	--font-ui: 'Inter';
 	--font-mono: 'JetBrains Mono';
+	--font-code: 'Fira Code';
+	--font-serif: 'Newsreader';
+	--font-head: 'Fraunces';
 }
 
 /* Light theme: overrides the full palette. Every hardcoded surface/text
@@ -391,13 +436,13 @@ button {
 	outline: 2px solid var(--blue2);
 	outline-offset: -2px;
 }
-/* The resizable inner column: width is set by JS (lib/theme.js
-   applyWidth) as a percentage of #chat's content width; margin: 0 auto
-   centers the narrowed column INSIDE the full-width #messages scroll
-   container, so the scrollbar stays pinned to the right edge of the
-   screen no matter how narrow the column gets. #composer mirrors the
-   same width + centering (see its rule) so the input stays aligned
-   under the text column. */
+/* The resizable inner column: width + horizontal position are set by JS
+   (lib/theme.js applyWidth). The column is centered on the SCREEN (not its
+   parent), clamped so its left edge never crosses the menu's right edge
+   (menu open) or the screen's left edge (menu hidden), plus the messages
+   padding. #messages stays full-width so its scrollbar is pinned to the
+   right screen edge; only the inner column + composer narrow/shift. The
+   margin: 0 auto below is the no-JS fallback (parent-centered). */
 #chat-col {
 	width: 100%;
 	margin: 0 auto;
@@ -412,7 +457,7 @@ button {
 	max-width: 92%;
 	padding: 10px 34px 10px 14px;
 	border-radius: 16px;
-	font-size: 0.97rem;
+	font-size: 9pt;
 	line-height: 1.55;
 	overflow-wrap: break-word;
 	min-width: 0;
@@ -546,14 +591,33 @@ button {
 .md h6 a.anchor:focus {
 	opacity: 1;
 }
+.md h1,
+.md h2,
+.md h3,
+.md h4,
+.md h5,
+.md h6 {
+	font-family: var(--font-head), Georgia, 'Times New Roman', serif;
+	font-weight: 600;
+	line-height: 1.2;
+}
 .md h1 {
-	font-size: 1.35em;
+	font-size: 32px;
 }
 .md h2 {
-	font-size: 1.2em;
+	font-size: 24px;
 }
 .md h3 {
-	font-size: 1.08em;
+	font-size: 20px;
+}
+.md h4 {
+	font-size: 17px;
+}
+.md h5 {
+	font-size: 15px;
+}
+.md h6 {
+	font-size: 13px;
 }
 .md ul,
 .md ol {
@@ -575,6 +639,8 @@ button {
 	background: var(--blockquote-bg);
 	border-radius: 6px;
 	color: var(--dim);
+	font-family: var(--font-serif), Georgia, 'Times New Roman', serif;
+	font-size: 11pt;
 }
 .md hr {
 	border: 0;
@@ -582,8 +648,8 @@ button {
 	margin: 12px 0;
 }
 .md code {
-	font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-	font-size: 0.86em;
+	font-family: var(--font-code), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 8.5pt;
 	background: var(--code-inline);
 	border-radius: 5px;
 	padding: 1.5px 5px;
@@ -626,8 +692,8 @@ pre.hljs {
 	margin: 0;
 	padding: 12px 14px;
 	overflow-x: auto;
-	font-size: 0.81rem;
-	font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: 8.5pt;
+	font-family: var(--font-code), ui-monospace, SFMono-Regular, Menlo, monospace;
 	line-height: 1.5;
 }
 pre.hljs code {
@@ -853,6 +919,13 @@ html[data-theme='dark'] pre.hljs .hljs-section {
 	-webkit-appearance: none;
 	background: transparent;
 	cursor: grab;
+}
+/* The width slider is a wide/desktop control: hide it on portrait mobile
+   and any viewport narrower than 1024px. */
+@media (max-width: 1023.98px) {
+	#width-slider {
+		display: none;
+	}
 }
 #width-slider::-webkit-slider-runnable-track {
 	height: 4px;
