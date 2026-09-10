@@ -189,3 +189,4 @@ HTTP (same origin, for state & export): `GET /api/conversations`,
 - Usage stats: "context %" uses the **last** request's prompt tokens vs the
   262144-token window; ↑/↓ are cumulative for the conversation.
 - Caddy proxies websockets natively (HTTP/1.1 upgrade pass-through).
+- Markdown lint: one global standard (`.markdownlint.json`) is tuned to the conversation exports the app writes to `sessions/` — the agent's output style is THE standard, and the README, `prompts/`, and `skills/` all lint under it. Run `npm run lint:md` (`markdownlint-cli2`, recursive, node_modules excluded).

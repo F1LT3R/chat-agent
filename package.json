@@ -9,7 +9,8 @@
 		"start": "node server/index.js",
 		"caddy": "caddy run --config Caddyfile --adapter caddyfile",
 		"start:all": "node scripts/start-all.mjs",
-		"dev": "node server/index.js --http"
+		"dev": "node server/index.js --http",
+		"lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\""
 	},
 	"keywords": [],
 	"author": "F1LT3R",
@@ -18,5 +19,8 @@
 	"dependencies": {
 		"highlight.js": "^11.12.0",
 		"ws": "^8.21.3"
+	},
+	"devDependencies": {
+		"markdownlint-cli2": "^0.23.2"
 	}
 }
