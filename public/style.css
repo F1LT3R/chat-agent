@@ -297,16 +297,14 @@ button {
 	min-height: 0;
 	position: relative;
 }
-/* The resizable column: #messages + #composer live inside it. width is
-   set by JS (lib/theme.js applyWidth) as a percentage of #chat's content
-   width; margin: 0 auto centers the narrowed column. */
+/* Full-width wrapper: the #messages scroll container (and its scrollbar)
+   always span the chat pane edge to edge; what shrinks with the width
+   slider is the inner #chat-col column and the #composer below it. */
 #chat-inner {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 	min-height: 0;
-	margin: 0 auto;
-	width: 100%;
 }
 #chat-head {
 	display: flex;
@@ -392,6 +390,17 @@ button {
 #messages:focus-visible {
 	outline: 2px solid var(--blue2);
 	outline-offset: -2px;
+}
+/* The resizable inner column: width is set by JS (lib/theme.js
+   applyWidth) as a percentage of #chat's content width; margin: 0 auto
+   centers the narrowed column INSIDE the full-width #messages scroll
+   container, so the scrollbar stays pinned to the right edge of the
+   screen no matter how narrow the column gets. #composer mirrors the
+   same width + centering (see its rule) so the input stays aligned
+   under the text column. */
+#chat-col {
+	width: 100%;
+	margin: 0 auto;
 }
 
 .msg {
@@ -765,6 +774,10 @@ html[data-theme='dark'] pre.hljs .hljs-section {
 	border-top: 1px solid var(--line);
 	background: var(--bg2);
 	padding: 6px 10px calc(8px + env(safe-area-inset-bottom));
+	/* width + centering set the same way as #chat-col (JS in theme.js) so
+       the input column stays aligned with the text column */
+	width: 100%;
+	margin: 0 auto;
 }
 #stats {
 	font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;

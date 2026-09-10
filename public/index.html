@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<meta name="theme-color" content="#0d0f14" />
 		<meta name="mobile-web-app-capable" content="yes" />
-		<title>chat-agent</title>
+		<title>🕵️ ChatAgent</title>
 		<link rel="icon" href="/icon.svg" type="image/svg+xml" />
 		<script src="/vendor/highlight-core.js" type="module"></script>
 		<link id="hljs-theme" rel="stylesheet" href="/vendor/highlight-github-dark.css" />
@@ -15,7 +15,7 @@
 		<div id="app">
 			<aside id="panel" tabindex="-1" aria-label="Conversations">
 				<div class="panel-head">
-					<span class="brand">chat-agent</span>
+					<span class="brand">🕵️ ChatAgent</span>
 					<button id="new-chat" title="New conversation" aria-label="New conversation">＋</button>
 				</div>
 				<ul id="conv-list"></ul>
@@ -31,7 +31,9 @@
 					<button id="export-btn" title="Export conversation as markdown" aria-label="Export markdown"><img src="/markserv.svg" alt="" /></button>
 				</header>
 				<div id="chat-inner">
-					<div id="messages" tabindex="0" role="log" aria-live="polite" aria-label="Chat messages"></div>
+					<div id="messages" tabindex="0" role="log" aria-live="polite" aria-label="Chat messages">
+					<div id="chat-col"></div>
+				</div>
 					<footer id="composer">
 						<div id="stats" role="status"></div>
 						<div id="input-row">

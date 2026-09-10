@@ -1,4 +1,4 @@
-# 🤖 chat-agent — 📱 mobile AI chat on your local network
+# 🕵️ ChatAgent — 📱 mobile AI chat on your local network
 
 A mobile-first AI chat that runs **entirely on your LAN**: a Node.js backend serves the web app over
 **HTTPS** (Caddy TLS), talks to a local OpenAI-compatible LLM — `qwen-3.8b-256k` — and lets the
@@ -15,6 +15,8 @@ leaving the network. 🏠
 - 🧠 **Thinking mode toggle** — per conversation: reason first, or answer directly
   (off by default; the thinking trace streams into a collapsible box with a
   200-char preview + expand arrow)
+- 🌗 **Light/dark themes** — the 🌙/☀️ button in the top bar flips the whole UI (and the syntax-highlighting palette) between two AA-checked themes; the choice is remembered (default dark)
+- 🎚️ **Resizable chat column** — the top-bar width slider narrows or widens the chat from 20% to 100% of the window (always centered); the choice is remembered per device
 - 📋 **Copy button on every turn** — and on every code block
 - 🎨 **Syntax highlighting** for code blocks (highlight.js, self-hosted)
 - 📊 **Usage stats line** — `↑12k ↓566 1.7%/262k`: tokens in, tokens out,
@@ -115,13 +117,9 @@ phone/browser ──https──▶ edge (node) 0.0.0.0:4242
 
 ## 📁 Layout
 
-- `server/` — Node.js backend (ESM): HTTP API, WebSocket hub, protocol edge,
-  agent loop, OpenAI-compatible streaming client, [`pagetest`](https://github.com/F1LT3R/pagetest) tool
-- `public/` — web assets: `index.html`, `style.css`, `sw.js` (notifications),
-  `icon.svg`, `fonts/` (self-hosted Inter + JetBrains Mono woff2)
-- `lib/` — the chat app (browser ES modules): `app.js`, `ui.js`, `ws.js`,
-  `md.js` (markdown + highlight.js), `slug.js` (heading slugs), `stats.js`,
-  `notify.js`
+- `server/` — Node.js backend (ESM): HTTP API, WebSocket hub, protocol edge, agent loop, OpenAI-compatible streaming client, [`pagetest`](https://github.com/F1LT3R/pagetest) + `sessions` tools
+- `public/` — web assets: `index.html`, `style.css`, `sw.js` (notifications), `icon.svg`, `markserv.svg` (export-button logo), `fonts/` (self-hosted Inter + JetBrains Mono woff2)
+- `lib/` — the chat app (browser ES modules): `app.js`, `ui.js`, `ws.js`, `md.js` (markdown + highlight.js), `slug.js` (heading slugs), `stats.js`, `notify.js`, `theme.js` (theme + width state)
 - `sessions/` — one conversation = `<uuid>.jsonl` (session log) + `<uuid>.md`
   (markdown, regenerated after every turn); the UI renders from these
 - `skills/SEARCH.md` — the agent's web-search skill
